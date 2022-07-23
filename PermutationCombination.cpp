@@ -63,3 +63,44 @@ public:
         return solution;
     }
 };
+
+class Solution {
+public:
+    int _n, _open, _close;
+    vector<string> _result;
+    
+    void backtrack(int n, string& row, int open, int close)
+    {
+
+        if(n == _n)
+        {
+            if(open == close)
+            {
+                _result.emplace_back(row);
+            }
+            return;
+        }
+
+        if(n < _n)
+        {
+            row.push_back('(');
+            backtrack(n + 1, row, open + 1, close);
+            row.pop_back();
+        }
+        if(close < open)
+        {
+            row.push_back(')');
+            backtrack(n + 1, row, open, close + 1);
+            row.pop_back();
+        }
+    }
+    vector<string> generateParenthesis(int n) 
+    {
+        _n = 2*n;
+        string row;
+        backtrack(0, row, 0, 0);
+        
+        return _result;
+        
+    }
+};
