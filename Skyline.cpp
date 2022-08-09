@@ -7,7 +7,7 @@ public:
         int left_idx = 0, right_idx = 0;
         int prev_pos = 0, prev_height = 0, cur_pos = 0, cur_height = 0;
         int prev_left_height = 0, prev_right_height = 0;
-        
+        //While merging compare with height of the previous contour
         vector<vector<int>> answer;
         
         while(left_idx < left_skyline.size() && right_idx < right_skyline.size())
@@ -61,6 +61,7 @@ public:
         
         if(left_idx == right_idx)
         {
+            //Change each building to [(start, height) , (end, 0)]
             return {{buildings[left_idx][0], buildings[left_idx][2]}, {buildings[left_idx][1], 0}};
         }
 
