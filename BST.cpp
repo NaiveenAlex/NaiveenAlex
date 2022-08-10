@@ -168,3 +168,58 @@ public:
         return _next != nullptr;    
     }
 };
+
+class Solution {
+public:
+    TreeNode* deleteNode(TreeNode* root, int key) 
+    {
+        if(root == nullptr) return nullptr;
+        if(root->val == key)
+        {
+            if(root->left == nullptr && root->right == nullptr)
+            {
+                delete root;
+                return nullptr;
+            }
+            
+            if(root->left && root->right == nullptr)
+            {
+                TreeNode* node = root;
+                root = root->left;
+                delete node;
+                return root;
+            }
+
+            //If key node has right child, replace the key node with the leftmost child of the right branch
+            if(root->right)
+            {
+                TreeNode* node = root;
+                TreeNode* suc  = root->right;
+                TreeNode* prev = root;
+                while(suc->left)
+                {
+                    prev = suc;
+                    if(suc->left)
+                        suc = suc->left;
+                }
+                if(suc != root->right)
+                {
+                    //Replace the predecessor's left node with successor's right node, as successor has no left child.
+                    prev->left = suc->right;
+                    suc->right = root->right;
+                }
+                suc->left = root->left;
+
+                
+                delete node;
+                return suc;
+            }
+        }
+        
+        if(key > root->val)
+            root->right = deleteNode(root->right, key);   
+        else
+            root->left = deleteNode(root->left, key);
+        return root;
+    }
+};
