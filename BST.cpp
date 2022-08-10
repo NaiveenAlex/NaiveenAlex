@@ -79,3 +79,92 @@ public:
         
     }
 };
+
+
+class BSTIterator {
+public:
+    TreeNode* _next = nullptr;
+    TreeNode* _root = nullptr;
+
+    TreeNode* _successor_head = nullptr;
+    
+    bool inOrder(TreeNode* root, TreeNode* p)
+    {
+        if(root == nullptr) return false;
+        
+        if(root == p) return true;
+        
+        bool left = inOrder(root->left, p);
+        if(left)
+        {
+            if(_successor_head == nullptr)
+                _successor_head = root;
+            return true;
+        }
+
+        
+        bool right = inOrder(root->right, p);
+        return right;
+    }
+    
+    TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) 
+    {
+        if(p == nullptr || root == nullptr) return nullptr;
+        
+        TreeNode* suc = nullptr;
+        
+        if(p->right)
+        {
+            suc = p->right;
+            while(suc->left)
+            {
+                suc = suc->left;
+            }
+        }
+        if (suc)
+            return suc;
+        _successor_head = nullptr;
+        if( inOrder( root, p))
+        {
+            if(_successor_head)
+                return _successor_head;
+        }
+        
+        return nullptr;
+        
+    }
+    
+    
+    BSTIterator(TreeNode* root) 
+    {
+        _root = root;
+        
+        while(root->left)
+        {
+            root = root->left;
+        }
+        _next = root;
+        
+        /*cout << "BSTI : " << _root->val << endl;
+        if(_next)
+        cout << _next->val << endl;*/
+    }
+    
+    int next() 
+    {
+        if(hasNext())
+        {
+        int result = _next->val;
+        
+        _next = inorderSuccessor( _root, _next);
+        
+        return result;
+        }
+        return -1;
+    }
+    
+    bool hasNext() 
+    {
+        return _next != nullptr;    
+    }
+};
