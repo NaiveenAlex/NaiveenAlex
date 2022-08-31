@@ -48,25 +48,11 @@ public:
         return find(x) == find(y);
     }
     
-    void insertToHeap(int index, const string& s)
-    {
-        int root = find(index);
-        node_heap[root].push(s[index]);
-    }
-    
-    char popFromHeap(int index)
-    {
-        int root = find(index);
-        char val = node_heap[root].top();
-        node_heap[root].pop();
-        return val;
-    }
-    
 
 private:
     vector<int> root;
     vector<int> rank;
-    unordered_map<int, std::priority_queue<char, std::vector<char>, std::greater<char> >> node_heap;
+    
 };
 
 
@@ -84,14 +70,24 @@ public:
             }
         }
 
-   		for(int i = 0; i < s.size(); ++i)
-            uf.insertToHeap(i, s);
-
-		string result = "";
-		
-		for(int i = 0; i < s.size(); ++i)
-			result = result + uf.popFromHeap(i);
-			
-		return result;
+        unordered_map<int, std::priority_queue<char, std::vector<char>, std::greater<char> >> node_heap;
+        
+   	for(int i = 0; i < s.size(); ++i)
+        {
+            int root = uf.find(i);
+            node_heap[root].push(s[i]);
+        }
+    
+	string result = "";
+	
+	for(int index = 0; index < s.size(); ++index)
+        {
+            int root = uf.find(index);
+            char val = node_heap[root].top();
+            result += val;
+            node_heap[root].pop();
+	}
+	    
+	return result;
     }
 };
