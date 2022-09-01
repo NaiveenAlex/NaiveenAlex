@@ -1,3 +1,5 @@
+//LC399
+
 class Solution
 {
 public:
@@ -25,7 +27,7 @@ public:
         
         pair<string, double> nodeARoot = Find(nodeWeights, nodeA);
         pair<string, double> nodeBRoot = Find(nodeWeights, nodeB);
-        
+        //Connect root of NodeA to root of NodeB
         if(nodeARoot.first != nodeBRoot.first)
         {
             nodeWeights[nodeARoot.first] = pair<string, double>(nodeBRoot.first,
