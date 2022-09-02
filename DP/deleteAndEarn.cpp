@@ -1,3 +1,4 @@
+//LC740
 class Solution 
 {
     public:
